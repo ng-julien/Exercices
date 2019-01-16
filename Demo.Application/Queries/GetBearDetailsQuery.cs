@@ -1,5 +1,7 @@
 ﻿namespace Demo.Application.Queries
 {
+    using Exceptions;
+
     using Zoo.Domain.BearAggregate;
 
     public interface IGetBearDetailsQuery
@@ -18,7 +20,13 @@
 
         public BearDetails Get(int id)
         {
-            return this.bearDetailsAdapter.FindById(id);
+            var bearDetails = this.bearDetailsAdapter.FindById(id);
+            if (bearDetails == null)
+            {
+                throw new NotFoundException($"L'animal id: {id} n'existe pas");
+            }
+
+            return bearDetails;
         }
     }
 }

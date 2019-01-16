@@ -16,7 +16,7 @@
 
     using Food = Repositories.Entities.Food;
 
-    internal class BearDetailsAdapter : AnimalAdapter<BearDetails, NotFoundBearDetails>, IBearDetailsAdapter
+    internal class BearDetailsAdapter : AnimalAdapter<BearDetails>, IBearDetailsAdapter
     {
         private readonly IWriter<Animal> animalWriter;
         

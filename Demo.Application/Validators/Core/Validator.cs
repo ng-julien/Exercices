@@ -1,15 +1,10 @@
 ﻿namespace Demo.Application.Validators.Core
 {
-    using System;
-    using System.Linq;
-
     using FluentValidation;
-
-    using Zoo.Domain;
 
     internal interface IValidator<in T>
     {
-        bool Validate(T value, Action<Error> addError);
+        void Validate(T value);
     }
 
     internal abstract class Validator<T> : AbstractValidator<T>, IValidator<T>
@@ -19,18 +14,15 @@
             this.DefineRules();
         }
 
-        public bool Validate(T value, Action<Error> addError)
+        void IValidator<T>.Validate(T value)
         {
-            var validationResult = base.Validate(value);
-            validationResult.Errors.ToList().ForEach(
-                failure =>
-                    {
-                        var error = Error.From(
-                            (name: failure.PropertyName, message: failure.ErrorMessage));
-                        addError(error);
-                    });
+            var validationResult = this.Validate(value);
+            if (validationResult.IsValid)
+            {
+                return;
+            }
 
-            return validationResult.IsValid;
+            throw new ValidationException($"L'animal {typeof(T).Name} n'est pas valide", validationResult.Errors);
         }
 
         protected abstract void OnDefineRules();

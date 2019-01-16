@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exceptions;
+
     using Infrastructure.Specifications;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -38,8 +40,13 @@
                                          ? restrainedAnimal.Family
                                          : (int)familyType;
                         return (animal.Id, animal.Name, Family: family);
-                    });
-            return animals.ToList();
+                    }).ToList();
+            if (!animals.Any())
+            {
+                throw new NotFoundException("Aucun animal n'a été trouvé");
+            }
+
+            return animals;
         }
 
         private IEnumerable<(int Id, string Name, int Family)> GetAnimals(

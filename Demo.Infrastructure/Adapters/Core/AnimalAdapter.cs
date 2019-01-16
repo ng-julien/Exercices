@@ -9,9 +9,7 @@
 
     using Transforms.Core;
 
-    using Zoo.Domain;
-
-    internal class AnimalAdapter<TAnimal, TNotFound> where TNotFound : TAnimal, INotFound, new()
+    internal class AnimalAdapter<TAnimal>
     {
         private readonly IReader<Animal> animalReader;
 
@@ -33,7 +31,7 @@
         {
             var animal = this.animalReader.Get(Queryable.Where, a => a.Id == id, this.animalsSpecification)
                              .Select(this.ToModelTransform.Projection)
-                             .Default<TAnimal, TNotFound>(id, Queryable.SingleOrDefault);
+                             .SingleOrDefault();
             return animal;
         }
     }

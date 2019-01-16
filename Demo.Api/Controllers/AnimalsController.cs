@@ -23,11 +23,6 @@
             [FromRoute] FamilyType family)
         {
             var animalsByFamily = animalsByFamilyQuery.Get(family);
-            if (!animalsByFamily.Any())
-            {
-                return this.NotFound();
-            }
-
             var animals = animalsByFamily.Select(animal => new { animal.Id, animal.Name });
             return this.Ok(animals);
         }
@@ -42,11 +37,6 @@
         public ActionResult<BearDetails> Get([FromServices] IGetBearDetailsQuery getBearDetailsQuery, int id)
         {
             var bear = getBearDetailsQuery.Get(id);
-            if (bear is NotFoundBearDetails)
-            {
-                return this.NotFound(bear);
-            }
-
             return this.Ok(bear);
         }
 
@@ -56,11 +46,6 @@
             [FromBody] CreateBear createBear)
         {
             var createdBear = await createBearCommand.CreateAsync(createBear);
-            if (createdBear is CreateBearError createBearError)
-            {
-                return this.BadRequest(createBearError);
-            }
-
             return this.Ok(createdBear);
         }
     }

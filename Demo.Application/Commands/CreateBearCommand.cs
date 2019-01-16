@@ -1,11 +1,9 @@
 ﻿namespace Demo.Application.Commands
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Validators.Core;
 
-    using Zoo.Domain;
     using Zoo.Domain.BearAggregate;
 
     public interface ICreateBearCommand
@@ -15,9 +13,9 @@
 
     internal class CreateBearCommand : ICreateBearCommand
     {
-        private readonly IValidator<CreateBear> validator;
-
         private readonly IBearDetailsAdapter bearDetailsAdapter;
+
+        private readonly IValidator<CreateBear> validator;
 
         public CreateBearCommand(IValidator<CreateBear> validator, IBearDetailsAdapter bearDetailsAdapter)
         {
@@ -27,13 +25,7 @@
 
         public async Task<BearDetails> CreateAsync(CreateBear createBear)
         {
-            var errors = new List<Error>();
-            var valid = this.validator.Validate(createBear, errors.Add);
-            if (!valid)
-            {
-                return new CreateBearError(createBear, errors);
-            }
-
+            this.validator.Validate(createBear);
             var createdBear = await this.bearDetailsAdapter.CreateAsync(createBear);
             return createdBear;
         }
