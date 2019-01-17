@@ -9,11 +9,23 @@
 
     public class EnumConstraint : IRouteConstraint
     {
+        private static readonly Dictionary<string, Type> EnumTypeByName;
+
         private readonly Type enumType;
 
-        public EnumConstraint(Dictionary<string, Type> enumTypeByName, string enumFamily)
+        static EnumConstraint()
         {
-            this.enumType = enumTypeByName[enumFamily];
+            var enumsOnApplication = AppDomain.CurrentDomain.GetAssemblies()
+                                              .Where(assembly => assembly.GetName().Name.StartsWith("Demo."))
+                                              .SelectMany(assembly => assembly.GetTypes().Where(t => t.IsEnum))
+                                              .ToList();
+
+            EnumTypeByName = enumsOnApplication.ToDictionary(type => type.Name, type => type);
+        }
+
+        public EnumConstraint(string enumFamily)
+        {
+            this.enumType = EnumTypeByName[enumFamily];
         }
 
         public bool Match(

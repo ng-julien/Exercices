@@ -17,7 +17,7 @@ namespace Demo.Infrastructure.Repositories.Entities
 
     // Animal
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    internal partial class Animal
+    public partial class Animal
     {
         public int Id { get; set; } // Id (Primary key)
         public string Name { get; set; } // Name (length: 50)

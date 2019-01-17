@@ -1,10 +1,10 @@
 ﻿namespace Demo.Api
 {
-    using Application;
-
     using Core;
 
     using Infrastructure;
+    using Infrastructure.Repositories;
+    using Infrastructure.Repositories.Entities;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -41,8 +41,9 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DemoContextFactory.ConnectionString = this.Configuration.GetConnectionString("DemoContext");
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            
             services.Configure<RouteOptions>(
                 routeOptions =>
                     {
@@ -51,8 +52,6 @@
                             "enum",
                             typeof(EnumConstraint));
                     });
-            services.ConfigureInfrastructure(this.Configuration)
-                    .ConfigureApplication();
         }
     }
 }

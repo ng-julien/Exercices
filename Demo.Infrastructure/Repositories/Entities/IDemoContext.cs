@@ -15,7 +15,7 @@
 namespace Demo.Infrastructure.Repositories.Entities
 {
 
-    internal partial interface IDemoDbContext : System.IDisposable
+    internal partial interface IDemoContext : System.IDisposable
     {
         System.Data.Entity.DbSet<Animal> Animals { get; set; } // Animal
         System.Data.Entity.DbSet<Family> Families { get; set; } // Family

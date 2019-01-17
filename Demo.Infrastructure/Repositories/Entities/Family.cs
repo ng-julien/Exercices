@@ -17,7 +17,7 @@ namespace Demo.Infrastructure.Repositories.Entities
 
     // Family
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    internal partial class Family
+    public partial class Family
     {
         public int Id { get; set; } // Id (Primary key)
         public string Name { get; set; } // Name (length: 50)

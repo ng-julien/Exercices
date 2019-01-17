@@ -8,24 +8,13 @@
     using Entities;
 
     using Specifications.Core;
-
-    public interface IReader<TEntity>
-        where TEntity : class
-    {
-        IQueryable<TResult> Get<TResult>(
-            Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, IQueryable<TResult>> func,
-            Expression<Func<TEntity, bool>> predicate,
-            ISpecification<TEntity> specification = null);
-
-        IQueryable<TEntity> Get(ISpecification<TEntity> specification = null);
-    }
-
-    internal class Reader<TEntity> : IReader<TEntity>
+    
+    internal sealed class Reader<TEntity>
         where TEntity : class
     {
         private readonly DbSet<TEntity> table;
-
-        public Reader(IDemoDbContext context)
+        
+        public Reader(IDemoContext context)
         {
             this.table = context.Set<TEntity>();
         }
@@ -33,13 +22,13 @@
         public IQueryable<TResult> Get<TResult>(
             Func<IQueryable<TEntity>, Expression<Func<TEntity, bool>>, IQueryable<TResult>> func,
             Expression<Func<TEntity, bool>> predicate,
-            ISpecification<TEntity> specification = null)
+            Specification<TEntity> specification = null)
         {
             var query = this.Get(specification);
             return func(query.AsNoTracking(), predicate);
         }
 
-        public IQueryable<TEntity> Get(ISpecification<TEntity> specification = null)
+        public IQueryable<TEntity> Get(Specification<TEntity> specification = null)
         {
             IQueryable<TEntity> query = this.table;
             var entitySpecification = specification ?? Specification<TEntity>.All;

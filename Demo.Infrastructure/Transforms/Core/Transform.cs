@@ -4,17 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
-    internal interface ITranform<TExternal, TDomain>
-    {
-        Expression<Func<TExternal, TDomain>> Projection { get; }
-
-        TDomain From(TExternal entity);
-
-        IReadOnlyList<TDomain> From(IQueryable<TExternal> queryable);
-    }
-
-    internal abstract class Tranform<TExternal, TDomain> : ITranform<TExternal, TDomain>
+    
+    public abstract class Tranform<TExternal, TDomain>
     {
         public abstract Expression<Func<TExternal, TDomain>> Projection { get; }
 

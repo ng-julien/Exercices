@@ -6,23 +6,8 @@
     using System.Linq.Expressions;
 
     public delegate void AddRelationship<TEntity>(Expression<Func<TEntity, object>> include);
-
-    public interface ISpecification<TEntity>
-    {
-        IReadOnlyList<Expression<Func<TEntity, object>>> Relationships { get; }
-
-        ISpecification<TEntity> And(ISpecification<TEntity> specification);
-
-        ISpecification<TEntity> Not();
-
-        ISpecification<TEntity> Or(ISpecification<TEntity> specification);
-
-        bool Satisfy(TEntity entity);
-
-        Expression<Func<TEntity, bool>> ToExpression();
-    }
-
-    public abstract class Specification<TEntity> : ISpecification<TEntity>
+    
+    public abstract class Specification<TEntity>
     {
         public static readonly Specification<TEntity> All = new IdentitySpecification<TEntity>();
 
@@ -42,7 +27,7 @@
             }
         }
 
-        public ISpecification<TEntity> And(ISpecification<TEntity> specification)
+        public Specification<TEntity> And(Specification<TEntity> specification)
         {
             if (this == All)
             {
@@ -57,12 +42,12 @@
             return new ConditionSpecification<TEntity>(this, specification, Expression.AndAlso);
         }
 
-        public ISpecification<TEntity> Not()
+        public Specification<TEntity> Not()
         {
             return new NotSpecification<TEntity>(this);
         }
 
-        public ISpecification<TEntity> Or(ISpecification<TEntity> specification)
+        public Specification<TEntity> Or(Specification<TEntity> specification)
         {
             if (this == All || specification == All)
             {

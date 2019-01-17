@@ -3,26 +3,23 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Validators.Core;
+    using Infrastructure.Adapters;
+
+    using Validators;
 
     using Zoo.Domain;
     using Zoo.Domain.BearAggregate;
 
-    public interface ICreateBearCommand
+    public class CreateBearCommand
     {
-        Task<BearDetails> CreateAsync(CreateBear createBear);
-    }
+        private readonly CreateBearValidator validator;
 
-    internal class CreateBearCommand : ICreateBearCommand
-    {
-        private readonly IValidator<CreateBear> validator;
+        private readonly BearDetailsAdapter bearDetailsAdapter;
 
-        private readonly IBearDetailsAdapter bearDetailsAdapter;
-
-        public CreateBearCommand(IValidator<CreateBear> validator, IBearDetailsAdapter bearDetailsAdapter)
+        public CreateBearCommand()
         {
-            this.validator = validator;
-            this.bearDetailsAdapter = bearDetailsAdapter;
+            this.validator = new CreateBearValidator();
+            this.bearDetailsAdapter = new BearDetailsAdapter();
         }
 
         public async Task<BearDetails> CreateAsync(CreateBear createBear)

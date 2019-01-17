@@ -6,12 +6,8 @@
     using Core;
 
     using Repositories.Entities;
-
-    internal interface IBearInformationSpecification : ISpecification<Animal>
-    {
-    }
-
-    internal class BearInformationSpecification : Specification<Animal>, IBearInformationSpecification
+    
+    internal class BearInformationSpecification : Specification<Animal>
     {
         public override Expression<Func<Animal, bool>> ToExpression() => animal => animal.FamilyId == FamilyCode.Bear;
 

@@ -17,7 +17,7 @@ namespace Demo.Infrastructure.Repositories.Entities
 
     // Food
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    internal partial class Food
+    public partial class Food
     {
         public int Id { get; set; } // Id (Primary key)
         public string Name { get; set; } // Name (length: 50)

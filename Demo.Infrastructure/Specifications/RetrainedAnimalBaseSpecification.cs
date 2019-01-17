@@ -14,12 +14,7 @@
     using Zoo.Domain.GiraffeAggregate;
     using Zoo.Domain.LionAggregate;
 
-    internal interface IRestrainedAnimalBaseSpecification<TRestrainedAnimal> : ISpecification<Animal>
-    {
-    }
-
-    internal class RestrainedAnimalBaseSpecification
-        <TRestrainedAnimal> : Specification<Animal>, IRestrainedAnimalBaseSpecification<TRestrainedAnimal>
+    internal class RestrainedAnimalBaseSpecification<TRestrainedAnimal> : Specification<Animal>
     {
         private readonly int[] families;
 

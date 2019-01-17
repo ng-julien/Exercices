@@ -13,30 +13,30 @@
 
     using Zoo.Domain.AnimalAggregate;
     using Zoo.Domain.Common;
-
-    internal class RestrainedAnimalAdapter<TRestrainedAnimal> : IRestrainedAnimalAdapter<TRestrainedAnimal>
-        where TRestrainedAnimal : RestrainedAnimalBase, new()
+    
+    public class RestrainedAnimalAdapter
     {
-        private readonly IReader<Animal> animalReader;
-
-        private readonly IRestrainedAnimalBaseSpecification<TRestrainedAnimal> specification;
-
-        private readonly ITranform<Animal, TRestrainedAnimal> toModelTransform;
-
-        public RestrainedAnimalAdapter(
-            IReader<Animal> animalReader,
-            IRestrainedAnimalBaseTransform<TRestrainedAnimal> toModelTransform,
-            IRestrainedAnimalBaseSpecification<TRestrainedAnimal> specification)
+        public IReadOnlyList<TRestrainedAnimal> GetAll<TRestrainedAnimal>() where TRestrainedAnimal : RestrainedAnimalBase, new()
         {
-            this.animalReader = animalReader;
-            this.toModelTransform = toModelTransform;
-            this.specification = specification;
+            using (IDemoContext context = DemoContextFactory.Instance.Create())
+            {
+                var animalReader = new Reader<Animal>(context);
+                var toModelTransform = this.GetTransform<TRestrainedAnimal>();
+                var specification = new RestrainedAnimalBaseSpecification<TRestrainedAnimal>();
+                var animals = animalReader.Get(specification).Select(toModelTransform.Projection).ToList();
+                return animals;
+            }
         }
 
-        public IReadOnlyList<TRestrainedAnimal> GetAll()
+        private Tranform<Animal, TRestrainedAnimal> GetTransform<TRestrainedAnimal>()
+            where TRestrainedAnimal : RestrainedAnimalBase, new()
         {
-            var animals = this.animalReader.Get(this.specification).Select(this.toModelTransform.Projection).ToList();
-            return animals;
+            if (typeof(TRestrainedAnimal) == typeof(RestrainedAnimal))
+            {
+                return new AnimalRestrainedTransform() as Tranform<Animal, TRestrainedAnimal>;
+            }
+
+            return new RestrainedAnimalBaseTransform<TRestrainedAnimal>();
         }
     }
 }

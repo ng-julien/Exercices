@@ -7,13 +7,13 @@
     {
         private readonly Func<Expression, Expression, Expression> conditionalFunc;
 
-        private readonly ISpecification<TEntity> left;
+        private readonly Specification<TEntity> left;
 
-        private readonly ISpecification<TEntity> right;
+        private readonly Specification<TEntity> right;
 
         public ConditionSpecification(
-            ISpecification<TEntity> left,
-            ISpecification<TEntity> right,
+            Specification<TEntity> left,
+            Specification<TEntity> right,
             Func<Expression, Expression, Expression> conditionalFunc)
         {
             this.left = left;

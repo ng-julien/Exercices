@@ -10,24 +10,17 @@
 
     using Specifications;
 
-    using Transforms.Core;
+    using Transforms;
 
     using Zoo.Domain.BearAggregate;
 
     using Food = Repositories.Entities.Food;
 
-    internal class BearDetailsAdapter : AnimalAdapter<BearDetails, NotFoundBearDetails>, IBearDetailsAdapter
+    public class BearDetailsAdapter : AnimalAdapter<BearDetails, NotFoundBearDetails>
     {
-        private readonly IWriter<Animal> animalWriter;
-        
-        public BearDetailsAdapter(
-            IReader<Animal> animalReader,
-            IWriter<Animal> animalWriter,
-            ITranform<Animal, BearDetails> animalTransform,
-            IBearInformationSpecification bearInformationSpecification)
-            : base(animalReader, animalTransform, bearInformationSpecification)
+        public BearDetailsAdapter()
+            : base(new BearDetailsTransform(), new BearInformationSpecification())
         {
-            this.animalWriter = animalWriter;
         }
 
         public async Task<BearDetails> CreateAsync(CreateBear createBear)
@@ -39,16 +32,22 @@
                               }).ToList();
 
             var bear = new Animal
-                             {
-                                 FamilyId = FamilyCode.Bear,
-                                 Foods = foods,
-                                 Name = createBear.Name,
-                                 Legs = createBear.Legs
-                             };
+                           {
+                               FamilyId = FamilyCode.Bear,
+                               Foods = foods,
+                               Name = createBear.Name,
+                               Legs = createBear.Legs
+                           };
 
-            this.animalWriter.Create(bear);
-            await this.animalWriter.SaveAsync();
-            return this.ToModelTransform.From(bear);
+            using (IDemoContext context = DemoContextFactory.Instance.Create())
+            {
+                using (var animalWriter = new Writer<Animal>(context))
+                {
+                    animalWriter.Create(bear);
+                    await animalWriter.SaveAsync();
+                    return this.ToModelTransform.From(bear);
+                }
+            }
         }
     }
 }

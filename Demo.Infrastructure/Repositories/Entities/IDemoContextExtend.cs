@@ -8,7 +8,7 @@ namespace Demo.Infrastructure.Repositories.Entities
 {
     using System.Data.Entity;
 
-    internal partial interface IDemoDbContext
+    internal partial interface IDemoContext
     {
         void SetState<TEntity>(TEntity entity, EntityState entityType)
             where TEntity : class;

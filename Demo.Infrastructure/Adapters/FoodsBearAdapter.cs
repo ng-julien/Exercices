@@ -8,38 +8,35 @@
 
     using Specifications;
 
+    using Transforms;
     using Transforms.Core;
-
-    using Zoo.Domain.BearAggregate;
 
     using Food = Repositories.Entities.Food;
     using FoodDomain = Zoo.Domain.BearAggregate.Food;
 
-    internal class FoodsBearAdapter : IFoodsBearAdapter
+    public class FoodsBearAdapter
     {
-        private readonly IReader<Family> familyReader;
+        private readonly Tranform<Food, FoodDomain> foodTransform;
 
-        private readonly ITranform<Food, FoodDomain> foodTransform;
+        private readonly WhatBearCanEatSpecification whatBearCanEatSpecification;
 
-        private readonly IWhatBearCanEatSpecification whatBearCanEatSpecification;
-
-        public FoodsBearAdapter(
-            IReader<Family> familyReader,
-            ITranform<Food, FoodDomain> foodTransform,
-            IWhatBearCanEatSpecification whatBearCanEatSpecification)
+        public FoodsBearAdapter()
         {
-            this.familyReader = familyReader;
-            this.foodTransform = foodTransform;
-            this.whatBearCanEatSpecification = whatBearCanEatSpecification;
+            this.foodTransform = new FoodTransform();
+            this.whatBearCanEatSpecification = new WhatBearCanEatSpecification();
         }
 
         public IReadOnlyList<FoodDomain> CanBeEat()
         {
-            var foods = this.familyReader.Get(this.whatBearCanEatSpecification)
-                            .SelectMany(family => family.Foods)
-                            .Select(this.foodTransform.Projection)
-                            .ToList();
-            return foods;
+            using (IDemoContext context = DemoContextFactory.Instance.Create())
+            {
+                var familyReader = new Reader<Family>(context);
+                var foods = familyReader.Get(this.whatBearCanEatSpecification)
+                                .SelectMany(family => family.Foods)
+                                .Select(this.foodTransform.Projection)
+                                .ToList();
+                return foods;
+            }
         }
     }
 }

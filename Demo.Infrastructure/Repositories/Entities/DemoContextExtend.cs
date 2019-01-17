@@ -2,7 +2,7 @@
 {
     using System.Data.Entity;
 
-    internal partial class DemoDbContext
+    public partial class DemoContext
     {
         public void SetState<TEntity>(TEntity entity, EntityState entityType)
             where TEntity : class

@@ -9,13 +9,7 @@
 
     using Zoo.Domain.Common;
 
-    internal interface IRestrainedAnimalBaseTransform<TRestrainedAnimal> : ITranform<Animal, TRestrainedAnimal>
-        where TRestrainedAnimal : RestrainedAnimalBase, new()
-    {
-    }
-
-    internal class RestrainedAnimalBaseTransform
-        <TRestrainedAnimal> : Tranform<Animal, TRestrainedAnimal>, IRestrainedAnimalBaseTransform<TRestrainedAnimal>
+    internal class RestrainedAnimalBaseTransform<TRestrainedAnimal> : Tranform<Animal, TRestrainedAnimal>
         where TRestrainedAnimal : RestrainedAnimalBase, new()
     {
         public override Expression<Func<Animal, TRestrainedAnimal>> Projection => animal => new TRestrainedAnimal

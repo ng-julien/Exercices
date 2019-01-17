@@ -7,11 +7,7 @@
 
     using Repositories.Entities;
     
-    internal interface IWhatBearCanEatSpecification : ISpecification<Family>
-    {
-    }
-
-    internal class WhatBearCanEatCanEatSpecification : Specification<Family>, IWhatBearCanEatSpecification
+    internal class WhatBearCanEatSpecification : Specification<Family>
     {
         public override Expression<Func<Family, bool>> ToExpression() => family => family.Id == FamilyCode.Bear;
 

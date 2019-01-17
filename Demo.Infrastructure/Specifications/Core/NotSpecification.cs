@@ -6,9 +6,9 @@
 
     internal sealed class NotSpecification<TEntity> : Specification<TEntity>
     {
-        private readonly ISpecification<TEntity> specification;
+        private readonly Specification<TEntity> specification;
 
-        public NotSpecification(ISpecification<TEntity> specification)
+        public NotSpecification(Specification<TEntity> specification)
         {
             this.specification = specification;
         }

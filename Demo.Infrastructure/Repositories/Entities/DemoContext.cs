@@ -17,42 +17,42 @@ namespace Demo.Infrastructure.Repositories.Entities
 
 
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    internal partial class DemoDbContext : System.Data.Entity.DbContext, IDemoDbContext
+    public partial class DemoContext : System.Data.Entity.DbContext, IDemoContext
     {
         public System.Data.Entity.DbSet<Animal> Animals { get; set; } // Animal
         public System.Data.Entity.DbSet<Family> Families { get; set; } // Family
         public System.Data.Entity.DbSet<Food> Foods { get; set; } // Food
 
-        static DemoDbContext()
+        static DemoContext()
         {
-            System.Data.Entity.Database.SetInitializer<DemoDbContext>(null);
+            System.Data.Entity.Database.SetInitializer<DemoContext>(null);
         }
 
-        public DemoDbContext()
+        public DemoContext()
             : base("Name=DemoContext")
         {
             InitializePartial();
         }
 
-        public DemoDbContext(string connectionString)
+        public DemoContext(string connectionString)
             : base(connectionString)
         {
             InitializePartial();
         }
 
-        public DemoDbContext(string connectionString, System.Data.Entity.Infrastructure.DbCompiledModel model)
+        public DemoContext(string connectionString, System.Data.Entity.Infrastructure.DbCompiledModel model)
             : base(connectionString, model)
         {
             InitializePartial();
         }
 
-        public DemoDbContext(System.Data.Common.DbConnection existingConnection, bool contextOwnsConnection)
+        public DemoContext(System.Data.Common.DbConnection existingConnection, bool contextOwnsConnection)
             : base(existingConnection, contextOwnsConnection)
         {
             InitializePartial();
         }
 
-        public DemoDbContext(System.Data.Common.DbConnection existingConnection, System.Data.Entity.Infrastructure.DbCompiledModel model, bool contextOwnsConnection)
+        public DemoContext(System.Data.Common.DbConnection existingConnection, System.Data.Entity.Infrastructure.DbCompiledModel model, bool contextOwnsConnection)
             : base(existingConnection, model, contextOwnsConnection)
         {
             InitializePartial();

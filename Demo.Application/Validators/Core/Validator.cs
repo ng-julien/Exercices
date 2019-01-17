@@ -7,12 +7,7 @@
 
     using Zoo.Domain;
 
-    internal interface IValidator<in T>
-    {
-        bool Validate(T value, Action<Error> addError);
-    }
-
-    internal abstract class Validator<T> : AbstractValidator<T>, IValidator<T>
+    internal abstract class Validator<T> : AbstractValidator<T>
     {
         protected Validator()
         {

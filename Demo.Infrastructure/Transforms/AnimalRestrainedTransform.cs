@@ -9,8 +9,7 @@
 
     using Zoo.Domain.AnimalAggregate;
 
-    internal class AnimalRestrainedTransform
-        : Tranform<Animal, RestrainedAnimal>, IRestrainedAnimalBaseTransform<RestrainedAnimal>
+    internal class AnimalRestrainedTransform: Tranform<Animal, RestrainedAnimal>
     {
         public override Expression<Func<Animal, RestrainedAnimal>> Projection => animal => new RestrainedAnimal
                                                                                                {

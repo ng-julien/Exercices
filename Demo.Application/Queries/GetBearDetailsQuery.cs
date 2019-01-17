@@ -1,19 +1,16 @@
 ﻿namespace Demo.Application.Queries
 {
+    using Infrastructure.Adapters;
+
     using Zoo.Domain.BearAggregate;
 
-    public interface IGetBearDetailsQuery
+    public class GetBearDetailsQuery
     {
-        BearDetails Get(int id);
-    }
+        private readonly BearDetailsAdapter bearDetailsAdapter;
 
-    internal class GetBearDetailsQuery : IGetBearDetailsQuery
-    {
-        private readonly IBearDetailsAdapter bearDetailsAdapter;
-
-        public GetBearDetailsQuery(IBearDetailsAdapter bearDetailsAdapter)
+        public GetBearDetailsQuery()
         {
-            this.bearDetailsAdapter = bearDetailsAdapter;
+            this.bearDetailsAdapter = new BearDetailsAdapter();
         }
 
         public BearDetails Get(int id)

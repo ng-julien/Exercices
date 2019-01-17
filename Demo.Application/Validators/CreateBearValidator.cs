@@ -7,15 +7,17 @@
 
     using FluentValidation;
 
+    using Infrastructure.Adapters;
+
     using Zoo.Domain.BearAggregate;
 
     internal class CreateBearValidator : Validator<CreateBear>
     {
-        private readonly IFoodsBearAdapter foodsBearAdapter;
+        private readonly FoodsBearAdapter foodsBearAdapter;
 
-        public CreateBearValidator(IFoodsBearAdapter foodsBearAdapter)
+        public CreateBearValidator()
         {
-            this.foodsBearAdapter = foodsBearAdapter;
+            this.foodsBearAdapter = new FoodsBearAdapter();
         }
         protected override void OnDefineRules()
         {

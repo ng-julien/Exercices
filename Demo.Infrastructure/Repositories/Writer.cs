@@ -7,31 +7,16 @@
 
     using Entities;
 
-    public interface IWriter<TEntity> : IDisposable
-        where TEntity : class
-    {
-        void Create(TEntity entity);
-
-        void Delete(object id);
-
-        void Delete<T>(ICollection<T> deletingEntities)
-            where T : class;
-
-        Task<int> SaveAsync();
-
-        TEntity Update(TEntity entity);
-    }
-
-    internal sealed class Writer<TEntity> : IWriter<TEntity>
+    internal sealed class Writer<TEntity> : IDisposable
         where TEntity : class
     {
         private readonly DbSet<TEntity> table;
 
-        private IDemoDbContext context;
+        private IDemoContext context;
 
         private bool disposed;
 
-        public Writer(IDemoDbContext context)
+        public Writer(IDemoContext context)
         {
             this.context = context;
             this.table = context.Set<TEntity>();

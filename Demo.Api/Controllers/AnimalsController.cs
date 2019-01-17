@@ -19,9 +19,9 @@
     {
         [HttpGet("{family:enum(FamilyType)}")]
         public ActionResult<IEnumerable<object>> Get(
-            [FromServices] IGetAnimalsByFamilyQuery animalsByFamilyQuery,
             [FromRoute] FamilyType family)
         {
+            var animalsByFamilyQuery = new GetAnimalsByFamilyQuery();
             var animalsByFamily = animalsByFamilyQuery.Get(family);
             if (!animalsByFamily.Any())
             {
@@ -33,14 +33,15 @@
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<object>> Get([FromServices] IGetAnimalsByFamilyQuery animalsByFamilyQuery)
+        public ActionResult<IEnumerable<object>> Get()
         {
-            return this.Get(animalsByFamilyQuery, FamilyType.All);
+            return this.Get(FamilyType.All);
         }
 
         [HttpGet("{family:enum(FamilyType)}/{id:min(1)}")]
-        public ActionResult<BearDetails> Get([FromServices] IGetBearDetailsQuery getBearDetailsQuery, int id)
+        public ActionResult<BearDetails> Get(int id)
         {
+            var getBearDetailsQuery = new GetBearDetailsQuery();
             var bear = getBearDetailsQuery.Get(id);
             if (bear is NotFoundBearDetails)
             {
@@ -52,9 +53,9 @@
 
         [HttpPost("{family:enum(FamilyType)}")]
         public async Task<ActionResult<BearDetails>> Post(
-            [FromServices] ICreateBearCommand createBearCommand,
             [FromBody] CreateBear createBear)
         {
+            var createBearCommand = new CreateBearCommand();
             var createdBear = await createBearCommand.CreateAsync(createBear);
             if (createdBear is CreateBearError createBearError)
             {
