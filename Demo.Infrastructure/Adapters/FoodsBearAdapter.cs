@@ -16,24 +16,21 @@
 
     public class FoodsBearAdapter
     {
-        private readonly Tranform<Food, FoodDomain> foodTransform;
-
-        private readonly WhatBearCanEatSpecification whatBearCanEatSpecification;
 
         public FoodsBearAdapter()
         {
-            this.foodTransform = new FoodTransform();
-            this.whatBearCanEatSpecification = new WhatBearCanEatSpecification();
         }
 
         public IReadOnlyList<FoodDomain> CanBeEat()
         {
+            var foodTransform = new FoodTransform();
+            var whatBearCanEatSpecification = new WhatBearCanEatSpecification();
             using (IDemoContext context = DemoContextFactory.Instance.Create())
             {
                 var familyReader = new Reader<Family>(context);
-                var foods = familyReader.Get(this.whatBearCanEatSpecification)
+                var foods = familyReader.Get(whatBearCanEatSpecification)
                                 .SelectMany(family => family.Foods)
-                                .Select(this.foodTransform.Projection)
+                                .Select(foodTransform.Projection)
                                 .ToList();
                 return foods;
             }
