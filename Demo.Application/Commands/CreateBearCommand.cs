@@ -12,26 +12,18 @@
 
     public class CreateBearCommand
     {
-        private readonly CreateBearValidator validator;
-
-        private readonly BearDetailsAdapter bearDetailsAdapter;
-
-        public CreateBearCommand()
-        {
-            this.validator = new CreateBearValidator();
-            this.bearDetailsAdapter = new BearDetailsAdapter();
-        }
-
         public async Task<BearDetails> CreateAsync(CreateBear createBear)
         {
+            var validator = new CreateBearValidator();
+            var bearDetailsAdapter = new BearDetailsAdapter();
             var errors = new List<Error>();
-            var valid = this.validator.Validate(createBear, errors.Add);
+            var valid = validator.Validate(createBear, errors.Add);
             if (!valid)
             {
                 return new CreateBearError(createBear, errors);
             }
 
-            var createdBear = await this.bearDetailsAdapter.CreateAsync(createBear);
+            var createdBear = await bearDetailsAdapter.CreateAsync(createBear);
             return createdBear;
         }
     }

@@ -6,16 +6,10 @@
 
     public class GetBearDetailsQuery
     {
-        private readonly BearDetailsAdapter bearDetailsAdapter;
-
-        public GetBearDetailsQuery()
-        {
-            this.bearDetailsAdapter = new BearDetailsAdapter();
-        }
-
         public BearDetails Get(int id)
         {
-            return this.bearDetailsAdapter.FindById(id);
+            var bearDetailsAdapter = new BearDetailsAdapter();
+            return bearDetailsAdapter.FindById(id);
         }
     }
 }

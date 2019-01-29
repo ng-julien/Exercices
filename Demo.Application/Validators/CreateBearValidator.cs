@@ -13,12 +13,6 @@
 
     internal class CreateBearValidator : Validator<CreateBear>
     {
-        private readonly FoodsBearAdapter foodsBearAdapter;
-
-        public CreateBearValidator()
-        {
-            this.foodsBearAdapter = new FoodsBearAdapter();
-        }
         protected override void OnDefineRules()
         {
             this.RuleFor(bear => bear.Name).NotEmpty();
@@ -28,7 +22,8 @@
 
         private bool BePartOfHisDiet(ICollection<int> foods)
         {
-            var canBeEatFoods = this.foodsBearAdapter.CanBeEat().Select(food => food.Code);
+            var foodsBearAdapter = new FoodsBearAdapter();
+            var canBeEatFoods = foodsBearAdapter.CanBeEat().Select(food => food.Code);
             var authorizedFoods = canBeEatFoods.Intersect(foods);
             return authorizedFoods.Count() == foods.Count;
         }

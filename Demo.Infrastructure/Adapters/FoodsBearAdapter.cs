@@ -9,18 +9,11 @@
     using Specifications;
 
     using Transforms;
-    using Transforms.Core;
 
-    using Food = Repositories.Entities.Food;
     using FoodDomain = Zoo.Domain.BearAggregate.Food;
 
     public class FoodsBearAdapter
     {
-
-        public FoodsBearAdapter()
-        {
-        }
-
         public IReadOnlyList<FoodDomain> CanBeEat()
         {
             var foodTransform = new FoodTransform();
@@ -29,9 +22,9 @@
             {
                 var familyReader = new Reader<Family>(context);
                 var foods = familyReader.Get(whatBearCanEatSpecification)
-                                .SelectMany(family => family.Foods)
-                                .Select(foodTransform.Projection)
-                                .ToList();
+                                        .SelectMany(family => family.Foods)
+                                        .Select(foodTransform.Projection)
+                                        .ToList();
                 return foods;
             }
         }
