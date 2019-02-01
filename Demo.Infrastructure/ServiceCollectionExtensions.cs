@@ -51,10 +51,10 @@
                     .AddTransient<ITranform<Food, Zoo.Domain.BearAggregate.Food>, FoodTransform>()
                     .AddTransient<IFoodsBearAdapter, FoodsBearAdapter>();
 
-            var enumsOnApplication = AppDomain.CurrentDomain.GetAssemblies()
-                                              .Where(assembly => assembly.GetName().Name.StartsWith("Demo."))
-                                              .SelectMany(assembly => assembly.GetTypes().Where(t => t.IsEnum))
-                                              .ToList();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                                      .Where(assembly => assembly.GetName().Name.StartsWith("Demo."));
+            var enumsOnApplication = assemblies.SelectMany(assembly => assembly.ExportedTypes.Where(t => t.IsEnum))
+                                               .ToList();
             services.AddSingleton(enumsOnApplication.ToDictionary(type => type.Name, type => type));
 
             return services;
