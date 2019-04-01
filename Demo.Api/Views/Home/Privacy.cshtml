@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h2>@ViewData["Title"]</h2>
+@model IEnumerable<System.Security.Claims.Claim>
+<p><ul>
+    @foreach (var claim in Model)
+    {
+        <text><li>@claim.Type - @claim.Value</li></text>
+    }
+</ul></p>
