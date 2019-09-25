@@ -1,6 +1,8 @@
 ﻿namespace Demo.Zoo.Domain.Referentials
 {
-    public class NotFoundReferential : Referential, INotFound
+    using Common;
+
+    public class NotFoundReferential : Referential, IModelNotFound
     {
     }
 }

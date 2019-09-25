@@ -1,5 +1,6 @@
 ﻿namespace Demo.Infrastructure.Adapters
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -9,34 +10,33 @@
     using Specifications;
 
     using Transforms;
-    using Transforms.Core;
 
     using Zoo.Domain.AnimalAggregate;
     using Zoo.Domain.Common;
 
     internal class RestrainedAnimalAdapter<TRestrainedAnimal> : IRestrainedAnimalAdapter<TRestrainedAnimal>
-        where TRestrainedAnimal : RestrainedAnimalBase, new()
+        where TRestrainedAnimal : AnimalRestrained, new()
     {
         private readonly IReader<Animal> animalReader;
 
-        private readonly IRestrainedAnimalBaseSpecification<TRestrainedAnimal> specification;
+        private readonly IRestrainedAnimalSpecification<TRestrainedAnimal> specification;
 
-        private readonly ITranform<Animal, TRestrainedAnimal> toModelTransform;
+        private readonly IRestrainedAnimalTransform<TRestrainedAnimal> toModelTransform;
 
         public RestrainedAnimalAdapter(
             IReader<Animal> animalReader,
-            IRestrainedAnimalBaseTransform<TRestrainedAnimal> toModelTransform,
-            IRestrainedAnimalBaseSpecification<TRestrainedAnimal> specification)
+            IRestrainedAnimalTransform<TRestrainedAnimal> toModelTransform,
+            IRestrainedAnimalSpecification<TRestrainedAnimal> specification)
         {
             this.animalReader = animalReader;
             this.toModelTransform = toModelTransform;
             this.specification = specification;
         }
 
-        public IReadOnlyList<TRestrainedAnimal> GetAll()
+        public IReadOnlyList<TProjection> GetAll<TProjection>(Func<TRestrainedAnimal, TProjection> transform)
         {
             var animals = this.animalReader.Get(this.specification).Select(this.toModelTransform.Projection).ToList();
-            return animals;
+            return animals.Select(transform).ToList();
         }
     }
 }

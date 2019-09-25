@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    internal interface ITranform<TExternal, TDomain>
+    internal interface ITransform<TExternal, TDomain>
     {
         Expression<Func<TExternal, TDomain>> Projection { get; }
 
@@ -14,7 +14,7 @@
         IReadOnlyList<TDomain> From(IQueryable<TExternal> queryable);
     }
 
-    internal abstract class Tranform<TExternal, TDomain> : ITranform<TExternal, TDomain>
+    internal abstract class Transform<TExternal, TDomain> : ITransform<TExternal, TDomain>
     {
         public abstract Expression<Func<TExternal, TDomain>> Projection { get; }
 

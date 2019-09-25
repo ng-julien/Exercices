@@ -19,7 +19,7 @@
         protected override void OnAddRelation(AddRelationship<AnimalCanEat> addRelationship)
         {
             base.OnAddRelation(addRelationship);
-            var include = new Relationship<AnimalCanEat>(animalCanEat => animalCanEat.Food);
+            var include = Relationship<AnimalCanEat>.Create(animalCanEat => animalCanEat.Food);
             addRelationship(include);
         }
     }

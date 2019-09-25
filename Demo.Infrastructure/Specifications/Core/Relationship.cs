@@ -11,14 +11,21 @@
             this.Root = root;
         }
 
+        public static Relationship<TEntity> Create(Expression<Func<TEntity, object>> root)
+        {
+            var relationship = new Relationship<TEntity>(root);
+            return relationship;
+        }
+
         public Expression<Func<TEntity, object>> Root { get; }
 
         public List<Expression<Func<object, object>>> Children { get; } = new List<Expression<Func<object, object>>>();
 
-        public void Then<TProperty>(Expression<Func<TProperty, object>> navigationPropertyPath)
+        public Relationship<TEntity> Then<TProperty>(Expression<Func<TProperty, object>> navigationPropertyPath)
         {
             var expression = Convert(navigationPropertyPath);
             this.Children.Add(expression);
+            return this;
         }
 
         private static Expression<Func<object, object>> Convert<TProperty>(Expression<Func<TProperty, object>> include)

@@ -2,7 +2,8 @@
 {
     using Common;
 
-    public class RestrainedLion : RestrainedAnimalBase
+    public sealed class LionDetailsNotFound : LionDetails, IModelNotFound
     {
+
     }
 }

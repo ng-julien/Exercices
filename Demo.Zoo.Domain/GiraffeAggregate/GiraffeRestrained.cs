@@ -2,7 +2,7 @@
 {
     using Common;
 
-    public class RestrainedGiraffe : RestrainedAnimalBase
+    public class GiraffeRestrained : AnimalRestrained
     {
     }
 }

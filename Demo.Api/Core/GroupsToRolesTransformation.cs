@@ -26,6 +26,7 @@
             }
 
             var user = await this.oktaClient.Users.GetUserAsync(idClaim.Value);
+
             if (user == null)
             {
                 return principal;

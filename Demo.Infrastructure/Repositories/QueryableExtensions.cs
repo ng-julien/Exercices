@@ -4,6 +4,7 @@
     using System.Linq;
 
     using Zoo.Domain;
+    using Zoo.Domain.Common;
 
     internal static class QueryableExtensions
     {
@@ -11,7 +12,7 @@
             this IQueryable<TProjection> query,
             int id,
             Func<IQueryable<TProjection>, TProjection> valueOrDefault)
-            where TNotFound : TProjection, INotFound, new()
+            where TNotFound : TProjection, IModelNotFound, new()
         {
             var value = valueOrDefault(query);
             if (value == null)

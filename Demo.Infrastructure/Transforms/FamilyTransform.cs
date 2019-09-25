@@ -9,7 +9,7 @@
 
     using Zoo.Domain.Referentials;
 
-    internal class FamilyTransform : Tranform<Family, Referential>
+    internal class FamilyTransform : Transform<Family, Referential>
     {
         public override Expression<Func<Family, Referential>> Projection => family => new Referential { Id = family.Id, Label = family.Name };
     }

@@ -4,9 +4,5 @@
 
     public class GiraffeDetails : AnimalDetails
     {
-        public GiraffeDetails(AnimalDetails animalDetails)
-            : base(animalDetails)
-        {
-        }
     }
 }

@@ -9,7 +9,7 @@
 
     using Zoo.Domain.Referentials;
 
-    internal class FoodTransform : Tranform<Food, Referential>
+    internal class FoodTransform : Transform<Food, Referential>
     {
         public override Expression<Func<Food, Referential>> Projection => food => new Referential
                                                                                      {

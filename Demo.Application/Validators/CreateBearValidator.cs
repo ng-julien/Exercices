@@ -9,7 +9,7 @@
 
     using Zoo.Domain.BearAggregate;
 
-    internal class CreateBearValidator : Validator<CreateBear>
+    internal class CreateBearValidator : Validator<BearCreating>
     {
         private readonly IFoodsBearAdapter foodsBearAdapter;
 
@@ -21,7 +21,7 @@
         {
             this.RuleFor(bear => bear.Name).NotEmpty();
             this.RuleFor(bear => bear.Foods).Must(this.BePartOfHisDiet);
-            this.RuleFor(bear => bear.Legs).Must(legs => legs >= 3);
+            this.RuleFor(bear => bear.Legs).Must(legs => legs >= 2 && legs <= 4);
         }
 
         private bool BePartOfHisDiet(ICollection<int> foods)

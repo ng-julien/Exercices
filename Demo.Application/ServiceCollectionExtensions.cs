@@ -10,12 +10,11 @@
     {
         public static IServiceCollection ConfigureApplication(this IServiceCollection services)
         {
-            services.AddTransient<IGetAnimalsByFamilyQuery, GetAnimalsByFamilyQuery>()
-                    .AddTransient<IGetBearDetailsQuery, GetBearDetailsQuery>()
-                    .AddTransient<IValidator<CreateBear>, CreateBearValidator>()
-                    .AddTransient<ICreateBearCommand, CreateBearCommand>()
-                    .AddTransient<IGetFamiliesQuery, GetFamiliesQuery>()
-                    .AddTransient<IGetAnimalDetailsById, GetAnimalDetailsById>();
+            services.AddTransient(typeof(IGetAnimalDetailQuery<>), typeof(GetAnimalDetailsQuery<>))
+                    .AddTransient(typeof(IGetRestrainedAnimalsQuery<>), typeof(GetRestrainedAnimalsQuery<>))
+                    .AddTransient(typeof(ICreateAnimalCommand<,>), typeof(CreateAnimalCommand<,>))
+                    .AddTransient<IValidator<BearCreating>, CreateBearValidator>()
+                    .AddTransient<IGetFamiliesQuery, GetFamiliesQuery>();
             return services;
         }
     }

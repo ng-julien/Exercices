@@ -9,30 +9,30 @@
 
     using Transforms.Core;
 
-    using Zoo.Domain;
-    
-    internal class AnimalAdapter<TAnimal, TNotFound>
-        where TNotFound : TAnimal, INotFound, new()
-    {
-        private readonly IReader<Animal> animalReader;
+    using Zoo.Domain.Common;
 
-        private readonly ISpecification<Animal> animalsSpecification;
+    internal class AnimalAdapter<TAnimal, TNotFound>
+        where TNotFound : TAnimal, IModelNotFound, new()
+    {
+        protected IReader<Animal> AnimalReader { get; }
+
+        protected ISpecification<Animal> AnimalsSpecification { get; }
 
         public AnimalAdapter(
             IReader<Animal> animalReader,
-            ITranform<Animal, TAnimal> toModelTransform,
+            ITransform<Animal, TAnimal> toModelTransform,
             ISpecification<Animal> animalsSpecification)
         {
-            this.animalReader = animalReader;
+            this.AnimalReader = animalReader;
             this.ToModelTransform = toModelTransform;
-            this.animalsSpecification = animalsSpecification;
+            this.AnimalsSpecification = animalsSpecification;
         }
 
-        protected ITranform<Animal, TAnimal> ToModelTransform { get; }
+        protected ITransform<Animal, TAnimal> ToModelTransform { get; }
 
-        public virtual TAnimal FindById(int id)
+        public TAnimal FindById(int id)
         {
-            var animal = this.animalReader.Get(Queryable.Where, a => a.Id == id, this.animalsSpecification)
+            var animal = this.AnimalReader.Get(Queryable.Where, a => a.Id == id, this.AnimalsSpecification)
                              .Select(this.ToModelTransform.Projection)
                              .Value<TAnimal, TNotFound>(id, Queryable.SingleOrDefault);
             return animal;

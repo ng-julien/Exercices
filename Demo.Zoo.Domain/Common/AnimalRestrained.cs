@@ -1,13 +1,11 @@
 ﻿namespace Demo.Zoo.Domain.Common
 {
-    public class RestrainedAnimalBase
+    public class AnimalRestrained
     {
-        protected RestrainedAnimalBase()
-        {
-        }
-
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public string Family { get; set; }
     }
 }

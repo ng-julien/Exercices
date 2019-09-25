@@ -17,13 +17,13 @@
     {
         private readonly IReader<AnimalCanEat> familyReader;
 
-        private readonly ITranform<Food, Referential> foodTransform;
+        private readonly ITransform<Food, Referential> foodTransform;
 
         private readonly IWhatBearCanEatSpecification whatBearCanEatSpecification;
 
         public FoodsBearAdapter(
             IReader<AnimalCanEat> familyReader,
-            ITranform<Food, Referential> foodTransform,
+            ITransform<Food, Referential> foodTransform,
             IWhatBearCanEatSpecification whatBearCanEatSpecification)
         {
             this.familyReader = familyReader;

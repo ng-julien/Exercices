@@ -1,5 +1,7 @@
 ﻿namespace Demo.Api.Core.Settings
 {
+    using System.Collections.Generic;
+
     public class OAuthSettings
     {
         public string Audience => this.ClientId;
@@ -14,6 +16,6 @@
 
         public string ResponseType { get; set; }
 
-        public string[] Scopes { get; set; }
+        public List<string> Scopes { get; set; }
     }
 }

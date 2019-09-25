@@ -14,9 +14,9 @@
     {
         private readonly IReader<Family> familyReader;
 
-        private readonly ITranform<Family, Referential> transform;
+        private readonly ITransform<Family, Referential> transform;
 
-        public FamilyAdapter(IReader<Family> familyReader, ITranform<Family, Referential> transform)
+        public FamilyAdapter(IReader<Family> familyReader, ITransform<Family, Referential> transform)
         {
             this.familyReader = familyReader;
             this.transform = transform;

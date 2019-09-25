@@ -10,16 +10,21 @@
 
     using Zoo.Domain.Common;
 
-    internal class AnimalDetailsTransform : Tranform<Animal, AnimalDetails>
+    internal interface IAnimalDetailsTransform<TAnimalDetails> : ITransform<Animal, TAnimalDetails>
+        where TAnimalDetails : AnimalDetails, new()
     {
-        public override Expression<Func<Animal, AnimalDetails>> Projection =>
-            animal => new AnimalDetails
+    }
+
+    internal class AnimalDetailsTransform<TAnimalDetails> : Transform<Animal, TAnimalDetails>, IAnimalDetailsTransform<TAnimalDetails>
+        where TAnimalDetails : AnimalDetails, new()
+    {
+        public override Expression<Func<Animal, TAnimalDetails>> Projection =>
+            animal => new TAnimalDetails
                           {
                               Id = animal.Id,
                               Foods = animal.AnimalEats.Select(animalEat => animalEat.Food.Name).ToList(),
                               Legs = animal.Legs,
-                              Name = animal.Name,
-                              FamilyId = animal.FamilyId
+                              Name = animal.Name
                           };
     }
 }

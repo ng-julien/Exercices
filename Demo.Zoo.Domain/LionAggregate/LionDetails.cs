@@ -4,9 +4,5 @@
 
     public class LionDetails : AnimalDetails
     {
-        public LionDetails(AnimalDetails animalDetails)
-            : base(animalDetails)
-        {
-        }
     }
 }

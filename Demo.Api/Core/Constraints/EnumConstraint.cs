@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Humanizer;
+
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
 
@@ -23,9 +25,15 @@
             RouteValueDictionary values,
             RouteDirection routeDirection)
         {
-            var response = Enum.GetNames(this.enumType)
-                               .Any(s => s.ToLowerInvariant() == values[routeKey].ToString().ToLowerInvariant());
-            return response;
+            var family = values[routeKey].ToString().Pluralize().Transform(To.LowerCase);
+            var isKnown = Enum.GetNames(this.enumType)
+                               .Any(s => s.Transform(To.LowerCase) == family);
+            if (isKnown)
+            {
+                values[routeKey] = family;
+            }
+
+            return isKnown;
         }
     }
 }

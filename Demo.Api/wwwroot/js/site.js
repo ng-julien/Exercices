@@ -3,35 +3,30 @@
 
 // Write your JavaScript code.
 
-(function(window, $) {
-    var animalsElm = $(".animals");
-    let origin = window.origin;
-    $.getJSON(origin + '/api/animals',
-        function (response) {
-            var animals = response.animals;
-            var families = response.families;
+(function (window, $, Humanizer) {
+    const animalsElm = $(".animals");
+    const origin = window.origin;
+    $.getJSON(origin.concat('/api/animals'),
+        (animals) => {
+            const mappedAnimals = animals.map(toAnimal);
 
-            var mappedAnimals = animals.map(animal => {
-                var family = families.find(family => family.id === animal.family).label;
-                return {
-                        id: animal.id,
-                        name: animal.name,
-                        family: family
-                    };
-            });
-
-            animalsElm.loadTemplate(origin + "/animal/animal-item.html", mappedAnimals,
+            animalsElm.loadTemplate(origin + "/animal/animal-item.html",
+                mappedAnimals,
                 {
-                    success: () => {
-                        $(".animals-animal > a").bind("click",
-                            function(event) {
-                                var detailurl = origin + '/api/animals/' + event.target.id;
-                                $.getJSON(detailurl,
-                                    function(response) {
-                                        console.log(response);
-                                    });
-                            });
-                    }
+                    success: () => $(".animals-animal > a").bind("click", getAnimalDetails)
                 });
         });
-})(window, window.$);
+
+    function toAnimal(animal) {
+        return {
+                id: animal.id,
+                name: animal.name,
+                family: animal.family
+            };
+    }
+
+    function getAnimalDetails({ target: { id, dataset: { family } } }) {
+        const detailUrl = origin.concat('/api/', family.pluralize(), '/', id);
+        $.getJSON(detailUrl, response => console.log(response));
+    }
+})(window, window.$, window.Humanizer);
