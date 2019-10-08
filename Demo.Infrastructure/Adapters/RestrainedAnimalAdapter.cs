@@ -33,10 +33,12 @@
             this.specification = specification;
         }
 
-        public IReadOnlyList<TProjection> GetAll<TProjection>(Func<TRestrainedAnimal, TProjection> transform)
+        public IReadOnlyList<TRestrainedAnimal> GetAll()
         {
-            var animals = this.animalReader.Get(this.specification).Select(this.toModelTransform.Projection).ToList();
-            return animals.Select(transform).ToList();
+            var animals = this.animalReader.Get(this.specification)
+                              .Select(this.toModelTransform.Projection)
+                              .ToList();
+            return animals;
         }
     }
 }

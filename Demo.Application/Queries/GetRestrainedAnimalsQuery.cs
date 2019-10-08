@@ -25,18 +25,7 @@
 
         public void Get(FoundCallback<IReadOnlyList<TRestrainedAnimal>> found, NotFoundCallback notFound)
         {
-            TRestrainedAnimal Transform(TRestrainedAnimal animal) => new TRestrainedAnimal
-                                                                         {
-                                                                             Id = animal.Id,
-                                                                             Name = animal.Name,
-                                                                             Family = animal is AnimalRestrained
-                                                                                          restrainedAnimal
-                                                                                          ? restrainedAnimal
-                                                                                              .Family
-                                                                                          : null
-                                                                         };
-
-            var animals = this.restrainedAnimalAdapter.GetAll(Transform);
+            var animals = this.restrainedAnimalAdapter.GetAll();
             if (!animals.Any())
             {
                 notFound();

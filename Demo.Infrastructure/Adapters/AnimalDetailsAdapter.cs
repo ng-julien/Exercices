@@ -15,8 +15,7 @@
     using Zoo.Domain.AnimalAggregate;
     using Zoo.Domain.Common;
 
-    internal class AnimalDetailsAdapter
-        <TAnimalDetails, TNotFound> : AnimalAdapter<TAnimalDetails, TNotFound>, IAnimalDetailsAdapter<TAnimalDetails>
+    internal class AnimalDetailsAdapter<TAnimalDetails, TNotFound> : AnimalAdapter<TAnimalDetails, TNotFound>, IAnimalDetailsAdapter<TAnimalDetails>
         where TAnimalDetails : AnimalDetails, new() where TNotFound : TAnimalDetails, IModelNotFound, new()
     {
         private readonly IWriter<Animal> animalWriter;
@@ -39,7 +38,8 @@
                              {
                                  FamilyId = FamilyCode.Get<TCreate>().First(),
                                  AnimalEats = foods,
-                                 Name = createAnimal.Name, Legs = createAnimal.Legs
+                                 Name = createAnimal.Name,
+                                 Legs = createAnimal.Legs
                              };
 
             this.animalWriter.Create(animal);
