@@ -1,6 +1,7 @@
 ﻿namespace Demo.Api
 {
     using System;
+    using System.IO;
     using System.Net;
     using System.Security.Claims;
 
@@ -24,6 +25,7 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
 
     using Newtonsoft.Json;
 
@@ -67,6 +69,8 @@
                             pattern: "{controller}/{action}/{id?}",
                             defaults: new { controller = "Home", action = "Index" });
                     });
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Zoo API V1"); });
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -162,6 +166,16 @@
                             m.FeatureProviders.Add(
                                 new GenericControllerFeatureProvider(typeof(AnimalsController<,,>))
                             ));
+
+            services.AddSwaggerGen(
+                c =>
+                    {
+                        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zoo", Version = "v1" });
+                        var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, "Demo.Api.xml");
+                        c.IncludeXmlComments(xmlCommentsPath);
+                    });
+            services.AddMvcCore()
+                    .AddApiExplorer();
         }
     }
 }

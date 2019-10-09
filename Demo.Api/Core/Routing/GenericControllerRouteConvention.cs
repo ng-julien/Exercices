@@ -18,7 +18,9 @@
 
             var genericType = controller.ControllerType.GenericTypeArguments[0];
             var className = genericType.ShortDisplayName().Humanize();
-            var controllerName = string.Concat(className.TakeWhile(c => c != ' ')).Pluralize();
+            var controllerName = string.Concat(className.TakeWhile(c => c != ' '))
+                                       .Transform(To.LowerCase)
+                                       .Pluralize();
 
             controller.ControllerName = controllerName;
             controller.RouteValues.Add("family", controllerName);

@@ -15,6 +15,10 @@
     public class AnimalsController : ControllerBase
     {
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         public ActionResult Get(
             [FromServices] IGetRestrainedAnimalsQuery<AnimalRestrained> getRestrainedAnimalsQuery)
         {
@@ -32,17 +36,25 @@
         where TDetails : AnimalDetails where TRestrained : AnimalRestrained where TCreating : AnimalCreating
     {
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(500)]
         public ActionResult Get(
             [FromServices] IGetRestrainedAnimalsQuery<TRestrained> getRestrainedAnimalsQuery)
         {
             ActionResult result = this.StatusCode((int)HttpStatusCode.InternalServerError);
             getRestrainedAnimalsQuery.Get(
                 animals => result = this.Ok(animals),
-                () => result = this.NotFound());
+                () => result = this.StatusCode((int)HttpStatusCode.NoContent));
             return result;
         }
 
         [HttpGet("{id:min(1)}")]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult Get(
             [FromRoute] int id,
             [FromServices] IGetAnimalDetailQuery<TDetails> getAnimalDetailsQuery)
@@ -57,6 +69,11 @@
         }
 
         [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult> Post(
             [FromServices] ICreateAnimalCommand<TCreating, TDetails> createAnimalCommand,
             [FromBody] TCreating createAnimal)
@@ -64,7 +81,9 @@
             ActionResult result = this.StatusCode((int)HttpStatusCode.InternalServerError);
             await createAnimalCommand.CreateAsync(
                 createAnimal,
-                createdAnimal => result = this.Ok(createdAnimal),
+                createdAnimal => result = this.Created(
+                                     $"api/{this.RouteData.Values["controller"]}/{createdAnimal.Id}",
+                                     createdAnimal),
                 errorAnimal => result = this.BadRequest(errorAnimal));
 
             return result;
